@@ -1,0 +1,80 @@
+ClassicalMD:
+  - name: min0
+    type: minimization
+    maxcyc: 5000
+    ncyc: 1000
+    ntr: 1
+    restraintmask: '!:257'
+  - name: min1
+    type: minimization
+    maxcyc: 5000
+    ncyc: 1000
+    ntr: 1
+    restraintmask: '!@H='
+    restraint_wt: 200
+  - name: min2
+    type: minimization
+    maxcyc: 20000
+    ncyc: 1000
+    ntr: 1
+    restraintmask: ':1-257'
+    restraint_wt: 200
+  - name: min3
+    type: minimization
+    maxcyc: 20000
+    ncyc: 100
+  - name: h1
+    type: heating
+    tempi: 100
+    temp0: 200
+    ntr: 1
+    restraint_wt: 200
+    restraintmask: ':1-257'
+  - name: h2
+    type: heating
+    tempi: 200
+    temp0: 300
+    ntr: 1
+    restraint_wt: 200
+    restraintmask: ':1-257'
+  - name: eq1
+    type: equilibration
+    ntp: 0
+    ntr: 1
+    restraint_wt: 40
+    restraintmask: ':1-257@CA'
+  - name: eq2
+    type: equilibration
+    ntp: 0
+    ntr: 1
+    restraint_wt: 30
+    restraintmask: ':1-257@CA'
+  - name: eq3
+    type: equilibration
+    ntp: 0
+    ntr: 1
+    restraint_wt: 20
+    restraintmask: ':1-257@CA'
+  - name: eq4
+    type: equilibration
+    ntp: 0
+    ntr: 1
+    restraint_wt: 10
+    restraintmask: ':1-257@CA'
+  - name: eq5
+    type: equilibration
+    ntp: 1
+    ntr: 1
+    restraint_wt: 10
+    restraintmask: ':1-257@CA'
+  - name: eq6
+    type: equilibration
+    ntp: 1
+    ntr: 0
+  - name: prod
+    type: production
+    istep: 1
+    fstep: 1000
+Output:
+  ./md
+  
