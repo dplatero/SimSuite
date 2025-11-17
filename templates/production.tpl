@@ -19,6 +19,8 @@
     ioutfm = {{ ioutfm | default(1) }},      ! Output format (1 = NetCDF)
 
     ! Potential function
+    {%+ set ntc = ntc | default(2) -%}
+    ntc = {{ ntc }},
     {%+ if ntc == 2 -%}
     {%- set ntf = 2 -%}
     {%- elif ntc == 3 -%}
@@ -28,9 +30,9 @@
     {%- endif +%}
     ntf = {{ ntf }},                         ! Force evaluation flag
     {%+ if ntp == 0 -%}
-    {%- set ntb = 1 -%}
+    {%- set ntb = ntb | default(1) -%}
     {%- elif ntp == 1 -%}
-    {%- set ntb = 2 -%}
+    {%- set ntb = ntb | default(2) -%}
     {%- endif +%}
     ntb = {{ ntb }},                         ! Periodic boundary conditions
     igb = {{ igb | default(0) }},            ! Implicit solvent model (0 = off)
@@ -46,7 +48,7 @@
     {%- endif +%}
 
     ! Molecular dynamics
-    nstlim = {{ nstlim | default(10000) }},  ! Number of MD steps
+    nstlim = {{ nstlim | default(5000) }},  ! Number of MD steps
     dt = {{ dt | default(0.002) }},          ! Time step (ps)
 
     {%+ set temp0 = temp0 | default(300.0) -%}

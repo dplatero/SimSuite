@@ -18,19 +18,35 @@
     ioutfm = {{ ioutfm | default(1) }},      ! Output format (1 = NetCDF)
 
     ! Potential function
-    ntf = {{ ntf | default(1) }},            ! Force evaluation flag
-    ntb = {{ ntb | default(1) }},            ! Periodic boundary conditions
-    nsnb = {{ nsnb | default(10) }},         ! Nonbonded pair list update
-    cut = {{ cut | default(10.00000) }},     ! Nonbonded cutoff distance
-    
+    {%+ set ntc = ntc | default(2) -%}
+    ntc = {{ ntc }},
+    {%+ if ntc == 2 -%}
+    {%- set ntf = 2 -%}
+    {%- elif ntc == 3 -%}
+    {%- set ntf = 3 -%}
+    {%- else -%}
+    {%- set ntf = ntf | default(2) -%}
+    {%- endif +%}
+    ntf = {{ ntf }},                         ! Force evaluation flag
+    {%+ if ntp == 0 -%}
+    {%- set ntb = ntb | default(1) -%}
+    {%- elif ntp == 1 -%}
+    {%- set ntb = ntb | default(2) -%}
+    {%- endif +%}
+    ntb = {{ ntb }},                         ! Periodic boundary conditions
+    igb = {{ igb | default(0) }},            ! Implicit solvent model (0 = off)
+    nsnb = {{ nsnb | default(10) }},         ! Nonbonded pair list update freq
+    cut = {{ cut | default(10.00000) }},     ! Nonbonded cutoff (Å)
+
     {%+ set ntr = ntr | default(0) -%}
-    {%- if ntr == 1 -%}
+    {%- if ntr == 1 +%}
     ! Frozen or restrained atoms
-    ntr = {{ ntr }},            ! Positional restraints (1 = yes)
-    restraint_wt = {{ restraint_wt | default(200.0)}}, ! Restraint weight
+    ntr = {{ ntr | default(1) }},            ! Positional restraints (1 = on)
+    restraint_wt = {{ restraint_wt | default(200.0) }}, ! Restraint weight (kcal/mol·Å²)
     restraintmask = '{{ restraintmask | default("!@H=") }}',   ! Restraint mask
     {%- endif +%}
-    
+   
+ 
     ! Energy minimization
     maxcyc = {{ maxcyc | default(20000) }},   ! Total minimization cycles
     ncyc = {{ ncyc | default(1000) }},       ! Steepest descent cycles
