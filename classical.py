@@ -14,10 +14,7 @@ import sys
 # Templates
 current_dir = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=FileSystemLoader(f'{current_dir}/templates'))
-tpl_files = {'minimization':'minimization.tpl',
-             'heating':'heating.tpl',
-             'production':'production.tpl',
-             'equilibration': 'production.tpl'}
+tpl_file = 'classical.tpl'
 
 # If no arguments, print the configuration template
 if len(sys.argv) < 2:
@@ -65,7 +62,7 @@ for step in config[section]:
         print(f'Missing name for step {step_no}. Using {step_type} instead')
         step_name = step['type']
     
-    template = env.get_template(tpl_files[step_type]) # load template
+    template = env.get_template(tpl_file) # load template
     input_file = template.render(**step) # render template with user config
     with open(f'{output_dir}/{step_name}.in', 'w') as f: # write template
         f.write(input_file)    
