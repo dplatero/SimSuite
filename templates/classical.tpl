@@ -1,4 +1,6 @@
 {{ name }}
+{%- set nstlim = nstlim | default(10000) %}
+{%- set maxcyc = maxcyc | default(5000) %}
 &cntrl
     ! General flags
     {%- if type == "minimization" %}
@@ -16,9 +18,9 @@
     ! Nature and format of the input
     irest = {{ irest | default(0) }}, ! Restart simulation (0 = new, 1 = restart)
     {%- if irest == 0 %}
-    {%- set ntx = 5 %}
-    {%- elif irest == 0 %}
     {%- set ntx = 1 %}
+    {%- elif irest == 1 %}
+    {%- set ntx = 5 %}
     {%- endif %}
     ntx = {{ ntx }}, ! Input format (1 = read coordinates, 5 = and velocities)
 
@@ -26,7 +28,11 @@
     ! Nature and format of the output
     ntxo = {{ ntxo | default(2) }},          ! Coordinate output format
     ntpr = {{ ntpr | default(500) }},        ! Print frequency (steps)
-    ntwr = {{ ntwr | default(1) }},          ! Restart write frequency
+    {%- if type == "minimization" %}
+    ntwr = {{ ntwr | default(maxcyc) }},          ! Restart write frequency
+    {%- else %}
+    ntwr = {{ ntwr | default(nstlim) }},          ! Restart write frequency
+    {%- endif %}
     iwrap = {{ iwrap | default(1) }},        ! Wrap coordinates (0 = off, 1 = on)
     ntwx = {{ ntwx | default(0) }},          ! Write coordinates to trajectory
     ntwv = {{ ntwv | default(0) }},          ! Write velocities to trajectory
